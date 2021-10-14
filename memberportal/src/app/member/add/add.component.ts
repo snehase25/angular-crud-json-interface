@@ -1,6 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Member } from '../shared/member.model';
+import { MEMBERS } from '../shared/mock-members';
 
 @Component({
   selector: 'app-add',
@@ -8,7 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  member: any = {};
+  public member: Member = {}; // add form model
+
   constructor(private router: Router, private location: Location) { }
 
   ngOnInit(): void {
@@ -16,17 +19,19 @@ export class AddComponent implements OnInit {
   }
 
   // "Save" button click
-  addMember() {
-    // Set the page name in session storage
-    sessionStorage.setItem('page','add');
+  public addMember(): void {
     // Navigate to list component to add the member in json members array
-    this.router.navigateByUrl('/list', { state: this.member });
+    MEMBERS.push(this.member);
+    // Set the page name in session storage to display message 
+    sessionStorage.setItem('page', 'added');
+    // Redirect to list page
+    this.location.back();
   }
 
   // "Back" button click
-  goBack() {
+  public goBack(): void {
     // Set the page name in session storage
-    sessionStorage.setItem('page','');
+    sessionStorage.setItem('page', 'back');
     this.location.back();
   }
 }

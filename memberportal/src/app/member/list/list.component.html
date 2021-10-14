@@ -11,12 +11,12 @@
         <th>Delete</th>
         <th>Detail</th>
     </tr>
-    <tr *ngFor="let member of membersMock;let indexOfElement = index;">
+    <tr *ngFor="let member of members;let indexOfElement = index;">
         <td>{{member.firstname}}</td>
         <td>{{member.lastname}}</td>
         <td>{{member.salary}}</td>
-        <td><a routerLink="/edit" [state]="{member:member,index:indexOfElement}">Edit</a></td>
-        <td><a routerLink="#" (click)="deleteMember(member);">Delete</a></td>
-        <td><a routerLink="/detail" [state]=member>Detail</a></td>
+        <td><a routerLink="/edit" [state]="{index:indexOfElement}">Edit</a></td>
+        <td><a routerLink="/list" (click)="deleteMember(member);">Delete</a></td>
+        <td><a routerLink="/detail" [state]={index:indexOfElement}>Detail</a></td>
     </tr>
 </table>

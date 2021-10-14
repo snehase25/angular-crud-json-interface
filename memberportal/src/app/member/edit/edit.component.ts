@@ -1,6 +1,8 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Member } from '../shared/member.model';
+import { MEMBERS } from '../shared/mock-members';
 
 @Component({
   selector: 'app-edit',
@@ -8,26 +10,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./edit.component.css']
 })
 export class EditComponent implements OnInit {
-  memberInfo: any;
+  public member!: Member; // Edit form model
+  private index!: number; // index of member to be updated
+
   constructor(private location: Location, private router: Router) { }
 
   ngOnInit(): void {
-    // Set the member details sent from list component via state
-    this.memberInfo = history.state;
+    this.index = history.state.index; // Sent as parameter from list page
+    this.getMemberByIndex(this.index);
   }
 
   // "Save" button click
-  updateMember() {
-    // Set the page name in session storage
-    sessionStorage.setItem('page','edit');
-    // Navigate to list component to update the member in json members array
-    this.router.navigateByUrl('/list', { state: this.memberInfo });
+  public updateMember(): void {
+    MEMBERS[this.index].firstname = this.member.firstname;
+    MEMBERS[this.index].lastname = this.member.lastname;
+    MEMBERS[this.index].salary = this.member.salary;
+    // Set the page name in session storage to display message 
+    sessionStorage.setItem('page', 'updated');
+    this.location.back();
   }
 
   // "Back" button click
-  goBack() {
+  public goBack(): void {
     // Set the page name in session storage
-    sessionStorage.setItem('page','');
+    sessionStorage.setItem('page', 'back');
     this.location.back();
+  }
+
+  private getMemberByIndex(index: number): void {
+    this.member = MEMBERS[index];
   }
 }
